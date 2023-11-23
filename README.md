@@ -1,16 +1,16 @@
-# レシート小説
+# 純粋レシート
 
 [ATOM Thermal Printer Kit](https://shop.m5stack.com/products/atom-thermal-printer-kit)を使って、レシート小説を印刷する。
 
 [Dual-Button](https://docs.m5stack.com/en/unit/dual_button)を接続し、
-赤を押すと10円レシート、青を押すと100円レシートが出るようになっている。
+赤を押すと 10 円レシート、青を押すと 100 円レシートが出るようになっている。
 
-10円を払うと10円のレシートがもらえ、100円を払うと100円のレシートがもらえる、
+10 円を払うと 10 円のレシートがもらえ、100 円を払うと 100 円のレシートがもらえる、
 **純粋レシート** である。
 
 ## 実装
 
-ATOM Thermal Printer Kit の[中国語のマニュアル](https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/atombase/atom_pritner/ATOM_PRINTER_CMD_v1.06.pdf)の7.1によれば、
+ATOM Thermal Printer Kit の[中国語のマニュアル](https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/atombase/atom_pritner/ATOM_PRINTER_CMD_v1.06.pdf)の 7.1 によれば、
 日本語印刷もできるはずなのだが、
 頑張ってもできなかったので、
 全て画像にして印刷することにした。
@@ -21,12 +21,12 @@ ATOM Thermal Printer Kit の[中国語のマニュアル](https://m5stack.oss-cn
 これを ImageMagick によって、印刷したいところだけ切り取った。
 その処理は[シェルスクリプト](./image.sh)になっている。
 
-これにより、グレイスケールのbmp（macではプレビューで見ることもできない）になるので、これをヘッダーファイルに変換する。
+これにより、グレイスケールの bmp（mac ではプレビューで見ることもできない）になるので、これをヘッダーファイルに変換する。
 それには、[このサイト](https://m5stack.lang-ship.com/tools/image2data/?format=1bit_2&_ga=2.254427854.756178971.1700724679-1544476008.1698913618&_gl=1*147xt5t*_ga*MTU0NDQ3NjAwOC4xNjk4OTEzNjE4*_ga_KFS82DRR35*MTcwMDcyNDY3OC4xMy4wLjE3MDA3MjQ2NzguMC4wLjA.*_ga_4XK8FG0C32*MTcwMDcyNDY3OS4xMi4wLjE3MDA3MjQ2NzkuMC4wLjA.)を使わせてもらった。
 実際にはこのサイトで生成したものを、型定義を少し手で書き換えて使っている。
 
-しかしこのままでは、ランダムなレシート小説を全て格納しようとするとDRAMが溢れてしまう。
-そこで、[pythonスクリプt](./src/compression.py)で、同じ値が連続しているときに
+しかしこのままでは、ランダムなレシート小説を全て格納しようとすると DRAM が溢れてしまう。
+そこで、[python スクリプ t](./src/compression.py)で、同じ値が連続しているときに
 「`{値, 連続出現回数}`」という構造体に書き換えることで、データを圧縮する。
 印刷時は連続出現回数分同じ値をシリアル通信に流すことで、印刷している。
 
@@ -34,8 +34,8 @@ ATOM Thermal Printer Kit の[中国語のマニュアル](https://m5stack.oss-cn
 ほとんどは`uint8_t`に収まる回数なので回数を`uint16_t`で表現するとメモリの無駄が発生すると考えた。
 そこで出現回数は`uint8_t`として、それ以上は構造体の繰り返しで表現することにした。
 
-またおまけ機能として、m5atomのボタンを押すと、QRコードと[パターン](./pattern.png)が印刷される。
-このQRコードは[ARサイト](https://github.com/tannakaken/ar-kumajirou)を指し示し、
+またおまけ機能として、m5atom のボタンを押すと、QR コードと[パターン](./pattern.png)が印刷される。
+この QR コードは[AR サイト](https://github.com/tannakaken/ar-kumajirou)を指し示し、
 そのサイトを開いてこのパターンを見ると、クマジロウ（我が家のぬいぐるみ）が踊る。
 さらにクマジロウをタップすると、逆立ちする。
 
